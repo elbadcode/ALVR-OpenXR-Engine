@@ -97,25 +97,27 @@ using CColorType = DirectX::XMVECTORF32;
 constexpr inline const std::array<const float, 3> DarkSlateGray { 0.184313729f, 0.309803933f, 0.309803933f };
 constexpr inline const std::array<const float, 3> CClear { 0.0f, 0.0f, 0.0f };
     
-constexpr inline const std::array<const CColorType, 4> ClearColors { CColorType
+constexpr inline const std::array<const CColorType, 3> ClearColors { CColorType
     // OpaqueClear - DirectX::Colors::DarkSlateGray
-    {DarkSlateGray[0], DarkSlateGray[1], DarkSlateGray[2], 1.0f},
+    {DarkSlateGray[0], DarkSlateGray[1], DarkSlateGray[2], 0.2f },
     // AdditiveClear
     { CClear[0], CClear[1], CClear[2], 0.0f },
     // AlphaBlendClear
-    { CClear[0], CClear[1], CClear[2], 0.5f },
-    // OpaqueClear - for XR_FB_passthrough / Passthrough Modes.
-    {DarkSlateGray[0], DarkSlateGray[1], DarkSlateGray[2], 0.2f},
+    { CClear[0], CClear[1], CClear[2], 1.0f },
+
 };
-constexpr inline const std::array<const CColorType, 4> VideoClearColors { CColorType
+constexpr inline const std::array<const CColorType, 3> VideoClearColors { CColorType
     // OpaqueClear
-    { CClear[0], CClear[1], CClear[2], 1.0f},
+    //
+    // Typically the alpha channel is ignored for XR_ENVIRONMENT_BLEND_MODE_OPAQUE but
+    // for runtimes which only support passthrough via explicit extensions such as XR_FB_passthrough & XR_HTC_passthrough
+    // and only have the an Opaque blend, the alpha channel is relevent/used in this case.
+    // 
+    { CClear[0], CClear[1], CClear[2], 0.2f },
     // AdditiveClear
     { CClear[0], CClear[1], CClear[2], 0.0f },
     // AlphaBlendClear
-    { CClear[0], CClear[1], CClear[2], 0.5f },
-    // OpaqueClear - for XR_FB_passthrough / Passthrough Modes.
-    { CClear[0], CClear[1], CClear[2], 0.2f },
+    { CClear[0], CClear[1], CClear[2], 1.0f },
 };
 
 DirectX::XMMATRIX XM_CALLCONV LoadXrPose(const XrPosef& pose);
