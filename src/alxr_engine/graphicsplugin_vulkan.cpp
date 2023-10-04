@@ -2634,6 +2634,7 @@ struct VulkanGraphicsPlugin : public IGraphicsPlugin {
             .engineVersion = 1,
         };
 #ifdef XR_USE_PLATFORM_ANDROID
+//not using any 1.3 features so doesnt matter        
 #pragma message ("Using Vulkan API version 1.3")
         appInfo.apiVersion = VK_API_VERSION_1_3;
         const char* const vulkanVersionStr = "1.3";
@@ -3421,7 +3422,7 @@ struct VulkanGraphicsPlugin : public IGraphicsPlugin {
     {
         return (w * h * LumaSize(format)) + (((w * h) / 2) * ChromaSize(format));
     }
-
+//fix typo
     VkDeviceSize createStagingBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory)
     {
         const VkBufferCreateInfo bufferInfo {
@@ -3609,7 +3610,7 @@ struct VulkanGraphicsPlugin : public IGraphicsPlugin {
                 .dataSize = sizeof(specializationConst),
                 .pData = &specializationConst
             };
-
+//fixed typos
             fragShaderInfo.pSpecializationInfo = &specializationInfo;
             m_videoStreamPipelines[pipelineIdx++].Create
             (
@@ -3632,7 +3633,8 @@ struct VulkanGraphicsPlugin : public IGraphicsPlugin {
             .sType = VK_STRUCTURE_TYPE_SAMPLER_YCBCR_CONVERSION_CREATE_INFO,
             .pNext = nullptr,
             .format = pixFmt,
-            .ycbcrModel = VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_IDENTITY,
+//change from YCBCR_709 to identity seems to improve RGB matching
+            .ycbcrModel = VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_IDENTITY, 
             .ycbcrRange = VK_SAMPLER_YCBCR_RANGE_ITU_NARROW,
             .components {
                 .r = VK_COMPONENT_SWIZZLE_IDENTITY,
@@ -3712,7 +3714,8 @@ struct VulkanGraphicsPlugin : public IGraphicsPlugin {
             vidTex.width = width;
             vidTex.height = height;
             vidTex.format = pixelFmt;
-            vidTex.stagingBufferSize = createStagingBuffer
+            //fix typo
+            vidTex.stagingBufferSize = createStagingBuffer 
             (
                 texSize,
                 VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
@@ -4415,7 +4418,7 @@ struct VulkanGraphicsPlugin : public IGraphicsPlugin {
 
     using FoveatedDecodeParamsPtr = std::shared_ptr<ALXR::FoveatedDecodeParams>;
     FoveatedDecodeParamsPtr m_fovDecodeParams{};
-
+//this doesnt do anything idk why I changed it
     XrVector3f m_maskModeKeyColor = {56.77f, -9.95f, 7.98f };
     float      m_maskModeAlpha = 1.0f;
     float      m_blendModeAlpha = 0.6f;
