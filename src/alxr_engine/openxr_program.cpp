@@ -1194,6 +1194,7 @@ struct OpenXrProgram final : IOpenXrProgram {
             case XR_COLOR_SPACE_REC709_FB: return "REC709";
             case XR_COLOR_SPACE_RIFT_CV1_FB: return "RIFT_CV1";
             case XR_COLOR_SPACE_RIFT_S_FB: return "RIFT_S";
+    //basically the same but followed recommendation to use rift_cv1 to match Link PCVR color
             case XR_COLOR_SPACE_QUEST_FB: return "RIFT_CV1.";
             case XR_COLOR_SPACE_P3_FB: return "P3";
             case XR_COLOR_SPACE_ADOBE_RGB_FB: return "ADOBE_RGB";
