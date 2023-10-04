@@ -2634,9 +2634,9 @@ struct VulkanGraphicsPlugin : public IGraphicsPlugin {
             .engineVersion = 1,
         };
 #ifdef XR_USE_PLATFORM_ANDROID
-#pragma message ("Using Vulkan API version 1.1")
-        appInfo.apiVersion = VK_API_VERSION_1_1;
-        const char* const vulkanVersionStr = "1.1";
+#pragma message ("Using Vulkan API version 1.3")
+        appInfo.apiVersion = VK_API_VERSION_1_3;
+        const char* const vulkanVersionStr = "1.3";
 #else
 #if defined(VK_API_VERSION_1_3) && (VK_VERSION_1_3 > 0)
 #pragma message ("Using Vulkan API version 1.3")
@@ -3422,7 +3422,7 @@ struct VulkanGraphicsPlugin : public IGraphicsPlugin {
         return (w * h * LumaSize(format)) + (((w * h) / 2) * ChromaSize(format));
     }
 
-    VkDeviceSize createStaggingBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory)
+    VkDeviceSize createStagingBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory)
     {
         const VkBufferCreateInfo bufferInfo {
             .sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO,
@@ -3603,14 +3603,14 @@ struct VulkanGraphicsPlugin : public IGraphicsPlugin {
 
             const auto specializationMap = MakeSpecializationMap(fovDecodeParamPtr != nullptr, passthroughMode);
             assert(!specializationMap.empty());
-            const VkSpecializationInfo speicalizationInfo{
+            const VkSpecializationInfo specializationInfo{
                 .mapEntryCount = (std::uint32_t)specializationMap.size(),
                 .pMapEntries = specializationMap.data(),
                 .dataSize = sizeof(specializationConst),
                 .pData = &specializationConst
             };
 
-            fragShaderInfo.pSpecializationInfo = &speicalizationInfo;
+            fragShaderInfo.pSpecializationInfo = &specializationInfo;
             m_videoStreamPipelines[pipelineIdx++].Create
             (
                 m_vkDevice,
@@ -3632,7 +3632,7 @@ struct VulkanGraphicsPlugin : public IGraphicsPlugin {
             .sType = VK_STRUCTURE_TYPE_SAMPLER_YCBCR_CONVERSION_CREATE_INFO,
             .pNext = nullptr,
             .format = pixFmt,
-            .ycbcrModel = VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_709,
+            .ycbcrModel = VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_IDENTITY,
             .ycbcrRange = VK_SAMPLER_YCBCR_RANGE_ITU_NARROW,
             .components {
                 .r = VK_COMPONENT_SWIZZLE_IDENTITY,
@@ -3712,7 +3712,7 @@ struct VulkanGraphicsPlugin : public IGraphicsPlugin {
             vidTex.width = width;
             vidTex.height = height;
             vidTex.format = pixelFmt;
-            vidTex.stagingBufferSize = createStaggingBuffer
+            vidTex.stagingBufferSize = createStagingBuffer
             (
                 texSize,
                 VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
@@ -4416,8 +4416,8 @@ struct VulkanGraphicsPlugin : public IGraphicsPlugin {
     using FoveatedDecodeParamsPtr = std::shared_ptr<ALXR::FoveatedDecodeParams>;
     FoveatedDecodeParamsPtr m_fovDecodeParams{};
 
-    XrVector3f m_maskModeKeyColor = { 0.01f, 0.01f, 0.01f };
-    float      m_maskModeAlpha = 0.3f;
+    XrVector3f m_maskModeKeyColor = {56.77f, -9.95f, 7.98f };
+    float      m_maskModeAlpha = 1.0f;
     float      m_blendModeAlpha = 0.6f;
 
     bool m_cmdBufferWaitNextFrame = true;

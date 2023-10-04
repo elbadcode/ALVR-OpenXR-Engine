@@ -1,5 +1,5 @@
 #if defined(ENABLE_SM5_MULTI_VIEW) || defined(ENABLE_SM6_MULTI_VIEW)
-    #define MULTI_VIEW_ENABLED
+#define MULTI_VIEW_ENABLED
 #endif
 
 struct PSVertex {
@@ -17,34 +17,22 @@ cbuffer ViewIDConstantBuffer : register(b1) {
 };
 #endif
 
-static const float2 TriPositions[3] =
-{
-    float2(-1.0f, -1.0f),
-    float2(-1.0f, 3.0f),
-    float2(3.0f, -1.0f)
-};
-static const float2 UVs[2][3] =
-{
-    {
-        float2(0.0f, 1.0f),
-        float2(0.0f, -1.0f),
-        float2(1.0f, 1.0f)
-    },
-    {
-        float2(0.5f, 1.0f),
-        float2(0.5f, -1.0f),
-        float2(1.5f, 1.0f)
-    }
-};
+static const float2 TriPositions[3] = {float2(-1.0f, -1.0f), float2(-1.0f, 3.0f), float2(3.0f, -1.0f)};
+static const float2 UVs[2][3] = {{float2(0.0f, 1.0f), float2(0.0f, -1.0f), float2(1.0f, 1.0f)},
+                                 {float2(0.5f, 1.0f), float2(0.5f, -1.0f), float2(1.5f, 1.0f)}};
 
-PSVertex MainVS(uint VertexID : SV_VertexID
+PSVertex MainVS(uint VertexID
+                : SV_VertexID
 #ifdef ENABLE_SM6_MULTI_VIEW
-    , uint ViewId : SV_ViewID
+                  ,
+                  uint ViewId
+                : SV_ViewID
 #elif defined(ENABLE_SM5_MULTI_VIEW)
-    , uint ViewId : SV_InstanceID
+                  ,
+                  uint ViewId
+                : SV_InstanceID
 #endif
-)
-{
+) {
     PSVertex output;
     output.Pos = float4(TriPositions[VertexID], 0.0f, 1.0f);
     output.uv = UVs[ViewId][VertexID];

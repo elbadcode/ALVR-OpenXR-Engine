@@ -25,7 +25,7 @@ enum class PassthroughMode : std::size_t {
 };
 
 enum class XrPixelFormat : std::uint32_t {
-    Uknown = 0,
+    Unknown = 0,
     NV12,
     P010LE,
     G8_B8_R8_3PLANE_420,
