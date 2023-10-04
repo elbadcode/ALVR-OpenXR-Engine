@@ -731,13 +731,13 @@ struct OpenXrProgram final : IOpenXrProgram {
             return excludeItr != exclusionMap.end() && excludeItr->second;
         };
         Log::Write(Log::Level::Warning, "Excluded Extensions (user specified):");
-        for (const auto& [extName, extAvaileble] : m_availableSupportedExtMap) {
+        for (const auto& [extName, extAvailable] : m_availableSupportedExtMap) {
             if (IsExcluded(extName)) {
                 const std::string name{ extName };
                 Log::Write(Log::Level::Warning, Fmt("\t%s", name.c_str()));
                 continue;
             }
-            if (extAvaileble) {
+            if (extAvailable) {
                 extensions.push_back(extName.data());
             }
         }
@@ -1194,7 +1194,7 @@ struct OpenXrProgram final : IOpenXrProgram {
             case XR_COLOR_SPACE_REC709_FB: return "REC709";
             case XR_COLOR_SPACE_RIFT_CV1_FB: return "RIFT_CV1";
             case XR_COLOR_SPACE_RIFT_S_FB: return "RIFT_S";
-            case XR_COLOR_SPACE_QUEST_FB: return "QUEST";
+            case XR_COLOR_SPACE_QUEST_FB: return "RIFT_CV1.";
             case XR_COLOR_SPACE_P3_FB: return "P3";
             case XR_COLOR_SPACE_ADOBE_RGB_FB: return "ADOBE_RGB";
             }
@@ -1787,8 +1787,8 @@ struct OpenXrProgram final : IOpenXrProgram {
             constexpr const XrPassthroughStyleFB style{
                 .type = XR_TYPE_PASSTHROUGH_STYLE_FB,
                 .next = nullptr,
-                .textureOpacityFactor = 0.5f,
-                .edgeColor = { 0.0f, 0.0f, 0.0f, 0.0f },
+                .textureOpacityFactor = 0.6f,
+                .edgeColor = { 0.2f, 0.2f, 0.02f, 0.2f },
             };
             const bool result = XR_SUCCEEDED(m_pfnPassthroughLayerSetStyleFB(m_ptLayerData.reconPassthroughLayer, &style));
             Log::Write(Log::Level::Verbose, Fmt("[XR_FB_passthrough] Passthrough layer style %s set.", result ? "successfully" : "failed to be"));

@@ -8,5 +8,7 @@ float4 MainPS
 #endif
 ) : SV_TARGET
 {
-    return float4(PS_SAMPLE_VIDEO_TEXTURE(input), 1.0f);
+    const float3 rgb = PS_SAMPLE_VIDEO_TEXTURE(input);
+    const float alpha = 1.0f - rgb.g;
+    return float4(rgb, alpha);
 }
